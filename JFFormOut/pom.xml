@@ -1,0 +1,70 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.laminarsoft.jazzforms.process.connector</groupId>
+	<artifactId>JFFormOut</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0</version>
+	<name>Jazz Forms business model Form output</name>
+	<properties>
+		<jbpm.version>5.4.0.Final</jbpm.version>
+		<drools.version>5.4.0.Final</drools.version>
+		<hibernate.version>3.4.0.GA</hibernate.version>
+		<hibernate.core.version>3.3.2.GA</hibernate.core.version>
+		<version.jboss.as>7.1.0.Final</version.jboss.as>
+		<ejb.version>3.0</ejb.version>
+		<jms.version>1.1</jms.version>
+	</properties>
+    <distributionManagement>
+        <repository>
+            <id>br.com.laminarsoft.jazzforms.jbpm</id>
+            <name>archetypes</name>
+            <url>file://c:/Usuários/alison/.m2/tmp</url>
+        </repository>
+    </distributionManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow</artifactId>
+			<version>${jbpm.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow-builder</artifactId>
+			<version>${jbpm.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.laminarsoft.jazzforms</groupId>
+			<artifactId>jazzforms-model</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.laminarsoft.jazzforms.jbpm</groupId>
+			<artifactId>archetypes</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

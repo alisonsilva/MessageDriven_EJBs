@@ -1,0 +1,18 @@
+import org.drools.process.core.datatype.impl.type.StringDataType;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemOcorrencia;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido;
+[
+  [
+    "name" : "JFRealizaCredito",
+    "description" : "Realiza o crédito",
+    "parameters" : [
+    	"pedido" : new JFMensagemPedido()
+    ],
+    "displayName" : "JF Realiza Crédito",
+    "icon" : "pictures/payment-card.png",
+    "category" : "Communication",
+    "defaultHandler" : "br.com.laminarsoft.jazzforms.process.menu.handlers.WIHRealizaCredito",
+    "documentation" : "index.html"
+  ]
+]

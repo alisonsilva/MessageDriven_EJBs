@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Built-By: alison
+Build-Jdk: 1.8.0_25
+Class-Path: hibernate-core-4.3.1.Final.jar jboss-logging-3.1.3.GA.jar 
+ jboss-logging-annotations-1.2.0.Beta1.jar jboss-transaction-api_1.2_s
+ pec-1.0.0.Final.jar hibernate-commons-annotations-4.0.4.Final.jar hib
+ ernate-jpa-2.1-api-1.0.0.Final.jar javassist-3.18.1-GA.jar antlr-2.7.
+ 7.jar jandex-1.1.0.Final.jar jbpm-flow-5.5.0.Final.jar knowledge-api-
+ 5.6.0.Final.jar drools-core-5.6.0.Final.jar mvel2-2.1.8.Final.jar kno
+ wledge-internal-api-5.6.0.Final.jar protobuf-java-2.5.0.jar jbpm-flow
+ -builder-5.5.0.Final.jar drools-compiler-5.6.0.Final.jar antlr-runtim
+ e-3.3.jar antlr-3.3.jar stringtemplate-3.2.1.jar ecj-3.5.1.jar jbpm-b
+ pmn2-5.5.0.Final.jar jbpm-bam-5.5.0.Final.jar hibernate-jpa-2.0-api-1
+ .0.1.Final.jar jbpm-persistence-jpa-5.5.0.Final.jar drools-persistenc
+ e-jpa-5.5.0.Final.jar log4j-1.2.16.jar ejb-api-3.0.jar jboss-ejb3-ext
+ -api-2.0.0.jar activation-1.1.jar mysql-connector-java-5.1.6.jar h2-1
+ .3.161.jar xstream-1.3.1.jar xpp3_min-1.1.4c.jar btm-2.1.1.jar jaxen-
+ 1.1.6.jar commons-logging-1.1.1.jar commons-codec-1.4.jar archetypes-
+ 0.0.1-SNAPSHOT.jar apns-1.0.0.Beta6.jar jackson-databind-2.1.4.jar ja
+ ckson-annotations-2.1.4.jar jackson-core-2.1.4.jar jsoup-1.8.2.jar re
+ steasy-jaxrs-2.3.1.GA.jar jaxrs-api-2.3.1.GA.jar scannotation-1.0.3.j
+ ar jsr250-api-1.0.jar commons-httpclient-3.1.jar jcip-annotations-1.0
+ .jar scannotation-1.0.2.jar javassist-3.6.0.GA.jar resteasy-jaxb-prov
+ ider-2.3.1.GA.jar jaxb-impl-2.2.4.jar jaxb-api-2.2.3.jar stax-api-1.0
+ -2.jar jackson-mapper-asl-1.9.11.jar jackson-core-asl-1.9.11.jar JFFo
+ rmOut-1.0.jar jazzforms-model-0.0.1.jar JFFormIn-1.0.jar
+Created-By: Maven Integration for Eclipse
+

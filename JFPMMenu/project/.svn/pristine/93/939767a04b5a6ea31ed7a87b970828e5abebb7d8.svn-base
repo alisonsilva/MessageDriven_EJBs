@@ -1,0 +1,22 @@
+import org.drools.process.core.datatype.impl.type.StringDataType;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido;
+[
+  [
+    "name" : "JFNotificaAndamento",
+    "description" : "Notifica o cliente do andamento",
+    "parameters" : [
+    	"pedido" : new br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido(),
+    	"mensagemAndamento" : new br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido(),
+    	"usuarios destinatarios" : new StringDataType(),
+    	"grupos destinatarios" : new StringDataType(),
+    	"assunto" : new StringDataType(),
+    	"conteudo" : new StringDataType()
+    ],
+    "displayName" : "JF Notifica Andamento",
+    "icon" : "pictures/forward.png",
+    "category" : "Communication",
+    "defaultHandler" : "br.com.laminarsoft.jazzforms.process.menu.handlers.WIHNotificaAndamentoHandler",
+    "documentation" : "index.html"
+  ]
+]

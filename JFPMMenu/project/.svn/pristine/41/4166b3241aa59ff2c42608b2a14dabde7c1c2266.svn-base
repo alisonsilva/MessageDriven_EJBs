@@ -1,0 +1,163 @@
+package br.com.laminarsoft.jazzforms.process.error;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.MessageDriven;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseFactory;
+import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderError;
+import org.drools.builder.KnowledgeBuilderErrors;
+import org.drools.builder.KnowledgeBuilderFactory;
+import org.drools.builder.ResourceType;
+import org.drools.event.process.DefaultProcessEventListener;
+import org.drools.event.process.ProcessStartedEvent;
+import org.drools.event.rule.DefaultAgendaEventListener;
+import org.drools.io.Resource;
+import org.drools.io.ResourceFactory;
+import org.drools.logger.KnowledgeRuntimeLoggerFactory;
+import org.drools.runtime.StatefulKnowledgeSession;
+import org.jboss.ejb3.annotation.Pool;
+
+import br.com.laminarsoft.jazzforms.jbpm.archetypes.ErrorMessage;
+import br.com.laminarsoft.jazzforms.process.error.handlers.ErrorEmailHandler;
+import br.com.laminarsoft.jazzforms.process.error.handlers.ErrorLogHandler;
+
+/**
+ * Message-Driven Bean implementation class for: TratamentoErrosSubscriber
+ */
+@MessageDriven(name = "TratamentoErrosSubscriberMDB", activationConfig = {
+		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "jms/queue/errorQueue"),
+		@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge") })
+@Pool("error-model-max-pool")
+public class TratamentoErrosSubscriber implements MessageListener {
+
+	/**
+	 * The internal ksession where the processes will run.
+	 */
+	protected static StatefulKnowledgeSession session;
+	public static Logger LOGGER;
+	public static Properties PROPS;
+
+	/**
+	 * Default constructor.
+	 */
+	public TratamentoErrosSubscriber() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see MessageListener#onMessage(Message)
+	 */
+	public void onMessage(Message message) {
+		if (session == null) {
+			initializeSession();
+			setupWorkItemHandlers();
+		}
+		if (LOGGER == null) {
+			LOGGER = LogManager.getLogger("br.com.laminarsoft.jazzforms.process.error");	
+		}
+		if (PROPS == null) {
+			PROPS = new Properties();
+			try {
+				PROPS.load(this.getClass().getResourceAsStream("/config.properties"));
+			} catch (IOException e) {
+				LOGGER.error("Erro ao carregar arquivo com configurações", e);
+				return;
+			}
+		}
+		
+		try {
+			if (message != null && message instanceof ObjectMessage && ((ObjectMessage)message).getObject() instanceof ErrorMessage) {
+				ErrorMessage errorMessage = ((ErrorMessage)((ObjectMessage)message).getObject());
+				
+				Map<String, Object> inputVariables = new HashMap<String, Object>();
+				inputVariables.put("to", PROPS.get("to"));
+				inputVariables.put("from", PROPS.get("from"));
+				inputVariables.put("subject", PROPS.get("subject"));
+				inputVariables.put("mensagem", errorMessage);
+				
+				session.startProcess("br.com.laminarsoft.jazzforms.process.error.TratamentoErrosProcess", inputVariables);
+			} else {
+				LOGGER.warn("A mensagem será descartada, pois não é do formato: br.com.laminarsoft.jazzforms.jbpm.archetypes.ErrorMessage");
+			}
+		} catch (JMSException e) {
+			LOGGER.error("Erro na recuperação da mensagem enviada", e);
+		}
+	}
+
+	private void initializeSession() {
+		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
+				.newKnowledgeBuilder();
+
+		for (Map.Entry<Resource, ResourceType> entry : this.getResources()
+				.entrySet()) {
+			kbuilder.add(entry.getKey(), entry.getValue());
+		}
+
+		if (kbuilder.hasErrors()) {
+			KnowledgeBuilderErrors errors = kbuilder.getErrors();
+
+			for (KnowledgeBuilderError error : errors) {
+				System.out.println(">>> Error:" + error.getMessage());
+
+			}
+			throw new IllegalStateException(
+					">>> Knowledge couldn't be parsed! ");
+		}
+
+		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+
+		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+
+		session = kbase.newStatefulKnowledgeSession();
+		KnowledgeRuntimeLoggerFactory.newConsoleLogger(session);
+
+		session.addEventListener(new DefaultAgendaEventListener() {
+
+			@Override
+			public void afterRuleFlowGroupActivated(
+					org.drools.event.rule.RuleFlowGroupActivatedEvent event) {
+				session.fireAllRules();
+			}
+
+		});
+
+		session.addEventListener(new DefaultProcessEventListener() {
+
+			@Override
+			public void beforeProcessStarted(ProcessStartedEvent event) {
+				session.insert(event.getProcessInstance());
+			}
+
+		});
+	}
+
+	public void setupWorkItemHandlers() {
+		session.getWorkItemManager().registerWorkItemHandler("Enviaremail",
+				new ErrorEmailHandler());
+		session.getWorkItemManager().registerWorkItemHandler(
+				"Registraremarquivo", new ErrorLogHandler());
+	}
+
+	private Map<Resource, ResourceType> getResources() {
+		// return the resources used by this test.
+		Map<Resource, ResourceType> resources = new HashMap<Resource, ResourceType>();
+		resources.put(ResourceFactory
+				.newClassPathResource("TratamentoErrosProcess.bpmn2"),
+				ResourceType.BPMN2);
+		return resources;
+	}
+}

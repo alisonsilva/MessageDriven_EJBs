@@ -1,0 +1,197 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.laminarsoft.jazzforms.alerta</groupId>
+	<version>1.0</version>
+	<artifactId>JFSendAlerta_parent</artifactId>
+	<packaging>pom</packaging>
+	<name>parent</name>
+	<modules>
+		<module>ear</module>
+		<module>ejbs</module>
+	</modules>
+
+	<properties>
+		<jbpm.version>5.5.0.Final</jbpm.version>
+		<drools.version>5.5.0.Final</drools.version>
+		<hibernate.version>3.4.0.GA</hibernate.version>
+		<hibernate.core.version>3.3.2.GA</hibernate.core.version>
+		<version.jboss.as>7.1.0.Final</version.jboss.as>
+		<ejb.version>3.0</ejb.version>
+		<jms.version>1.1</jms.version>
+		<mysql.version>5.1.6</mysql.version>
+	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<configuration>
+						<unzipCommand>/usr/bin/unzip -o > err.txt</unzipCommand>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>br.com.laminarsoft.jazzforms.report</groupId>
+				<artifactId>JFSendAlerta_ejb</artifactId>
+				<version>1.0</version>
+				<type>ejb</type>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.drools</groupId>
+			    <artifactId>drools-persistence-jpa</artifactId>
+			    <version>${jbpm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-flow</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-flow-builder</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>org.jbpm</groupId>
+                <artifactId>jbpm-bam</artifactId>
+                <version>${jbpm.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-bpmn2</artifactId>
+				<version>${jbpm.version}</version>
+			</dependency>
+			<dependency>
+		        <groupId>org.jbpm</groupId>
+		        <artifactId>jbpm-persistence-jpa</artifactId>
+		        <version>${jbpm.version}</version>
+		    </dependency>			
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.6.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.6.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.ejb</groupId>
+				<artifactId>ejb-api</artifactId>
+				<version>${ejb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.as</groupId>
+				<artifactId>jboss-as-jms-client-bom</artifactId>
+				<version>${version.jboss.as}</version>
+				<type>pom</type>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.ejb3</groupId>
+				<artifactId>jboss-ejb3-ext-api</artifactId>
+				<version>2.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4.7</version>
+				<scope>provided</scope>				
+			</dependency>
+	        <dependency>
+	            <groupId>mysql</groupId>
+	            <artifactId>mysql-connector-java</artifactId>
+	            <version>${mysql.version}</version>
+	        </dependency>
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>1.3.161</version>
+			</dependency>	
+
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+     <artifactId>resteasy-jaxrs</artifactId>
+    <version>2.3.1.GA</version>
+</dependency>
+<dependency>
+    <groupId>net.sf.scannotation</groupId>
+    <artifactId>scannotation</artifactId>
+    <version>1.0.2</version>
+</dependency>
+<!-- JAXB provider -->
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-jaxb-provider</artifactId>
+    <version>2.3.1.GA</version>
+</dependency>    
+
+			<dependency>
+			    <groupId>javax.ws.rs</groupId>
+			    <artifactId>javax.ws.rs-api</artifactId>
+			    <version>2.0</version>
+			</dependency> 
+
+        <!-- JERSEY -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-bundle</artifactId>
+            <version>1.17</version>
+        </dependency>
+        
+  		<dependency>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-mapper-asl</artifactId>
+		    <version>1.9.11</version>
+		</dependency>
+        
+        
+			<dependency>
+				<groupId>br.com.laminarsoft.jazzforms.jbpm</groupId>
+				<artifactId>archetypes</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+            <dependency>
+                <groupId>br.com.laminarsoft.jazzforms.process.connector</groupId>
+                <artifactId>JFFormOut</artifactId>
+                <version>1.0</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>br.com.laminarsoft.jazzforms.process.connector</groupId>
+                <artifactId>JFFormIn</artifactId>
+                <version>1.0</version>
+            </dependency>	
+<dependency>
+    <groupId>net.sf.jasperreports</groupId>
+    <artifactId>jasperreports</artifactId>
+    <version>6.0.3</version>
+</dependency>   
+
+            		
+		</dependencies>
+	</dependencyManagement>
+	<distributionManagement>
+		<site>
+			<id>site</id>
+			<name>project website</name>
+			<url>scp://local.company.com/websites/project.company.com/</url>
+		</site>
+	</distributionManagement>
+</project>

@@ -1,0 +1,22 @@
+import org.drools.process.core.datatype.impl.type.StringDataType;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemOcorrencia;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido;
+[
+  [
+    "name" : "JFOcorrencia",
+    "description" : "Persiste ocorrência",
+    "parameters" : [
+    	"pedido" : new JFMensagemPedido(),
+    	"codigo" : new StringDataType(),
+    	"conteudo" : new StringDataType(),
+    	"processName" : new StringDataType(),
+    	"processInstanceID" : new StringDataType()
+    ],
+    "displayName" : "JF Ocorrencia",
+    "icon" : "pictures/database.png",
+    "category" : "Communication",
+    "defaultHandler" : "br.com.laminarsoft.jazzforms.process.menu.handlers.WIHOcorrenciaHandler",
+    "documentation" : "index.html"
+  ]
+]

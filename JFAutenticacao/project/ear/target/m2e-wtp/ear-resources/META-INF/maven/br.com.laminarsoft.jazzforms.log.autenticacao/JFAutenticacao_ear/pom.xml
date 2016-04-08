@@ -1,0 +1,35 @@
+<project>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>br.com.laminarsoft.jazzforms.log.autenticacao</groupId>
+   <artifactId>JFAutenticacao_ear</artifactId>
+   <packaging>ear</packaging>
+   <version>1.0</version>
+   <name>ear assembly</name>
+   <parent>
+      <groupId>br.com.laminarsoft.jazzforms.log.autenticacao</groupId>
+      <artifactId>JFAutenticacao_parent</artifactId>
+      <version>1.0</version>
+   </parent>
+   <dependencies>
+      <dependency>
+         <groupId>br.com.laminarsoft.jazzforms.log.autenticacao</groupId>
+         <artifactId>JFAutenticacao_ejb</artifactId>
+         <type>ejb</type>
+         <version>1.0</version>
+      </dependency>
+   </dependencies>
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>maven-ear-plugin</artifactId>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <addClasspath>true</addClasspath>
+                  </manifest>
+               </archive>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+</project>

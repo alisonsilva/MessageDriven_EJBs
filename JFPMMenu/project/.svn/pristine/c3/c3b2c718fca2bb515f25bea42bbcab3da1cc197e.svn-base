@@ -1,0 +1,5 @@
+<process_model>
+    <processId>br.com.laminarsoft.jazzit.processo.limpatrilho.pm_limpatrilho2</processId>
+    <processName>pm_limpatrilho2</processName>
+    <nodes nodeId="Task_3" nodeName="Processa pedido"/>
+</process_model>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:ehcache="http://www.springmodules.org/schema/ehcache" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:jcs="http://www.springmodules.org/schema/jcs"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd                        
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+				        http://www.springmodules.org/schema/ehcache 
+				        http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd
+                        http://www.springframework.org/schema/security 
+                        http://www.springframework.org/schema/security/spring-security-3.0.xsd
+                        http://www.springmodules.org/schema/jcs
+                        http://www.springmodules.org/schema/cache/springmodules-jcs.xsd				        
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                        http://www.springframework.org/schema/mvc 
+                        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+						http://www.springframework.org/schema/jee
+                        http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="messageConverters">
+			<list>
+				<bean id="messageConverter"
+					class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+					<property name="marshaller" ref="xmlMarshaller" />
+					<property name="unmarshaller" ref="xmlMarshaller" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="xmlMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Pagina</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Projeto
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.RadioButton
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.TextField
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.TipoEvento
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ComponentType
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.TitledPane
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ImplementacaoEvento
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.BPInstance
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ValorBPInstance
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Deployment
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Historico
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Usuario
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Grupo</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Instancia
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ValorFormulario
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ValorDataview
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Linha</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Campo</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Foto</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Mensagem</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.AgrupamentoMensagem</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Anexo</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Localizacao
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.Equipamento
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.GrupoEquipamento
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ProcessModel
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.ProcessNode
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.ProjetoImplantadoVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.ProjetoImplantadoHistoricoVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.InstanciaVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.InstanciasVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.LinhaVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.AnexoVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.DeploymentVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.ParametroVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.PostRequestVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.MensagemVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.BPInstanceVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.ValorBPInstanceVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.CampoVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.ValorDataviewVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.ValorFormularioVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.wrapper.DataviewOpcaoVO
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoEvento
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoMensagem
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoIcon
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoLdap
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoPagina
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoEquipamento
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoProjeto
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoDeployments
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoOpcoesDTV
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoInstancia
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoOpcaoSelect
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoUsuario
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.util.InfoRetornoProcessModel
+				</value>
+
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.ActionSheet
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Button
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.CheckBox
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.DataView
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.DatePicker
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Email
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Field
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.FieldSet
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.FormPanel
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Geolocation
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Hidden
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Image
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Label
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Layout
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.List
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Map
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.MessageBox
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.NavigationView
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.NestedList
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Number
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Option
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Panel
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Password
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Picker
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Radio
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.SegmentedButton
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Select
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Sheet
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Slider
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Spacer
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Spinner
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Tab
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.TabPanel
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Text
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.TextArea
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.TitleBar
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Toggle
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.ToolBar
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Carousel
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Camera
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Chart
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Icon
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Component
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.Container
+				</value>
+				<value>br.com.laminarsoft.jazzforms.persistencia.model.senchawrapper.GPSField
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<aop:config proxy-target-class="true" />
+
+	<context:component-scan base-package="br.com.laminarsoft.jazzforms" />
+	<context:annotation-config />
+	<mvc:annotation-driven />
+
+
+	<aop:config proxy-target-class="true" />
+
+</beans>

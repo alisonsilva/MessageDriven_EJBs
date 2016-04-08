@@ -1,0 +1,48 @@
+<project>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>br.com.laminarsoft.jazzforms.process.error</groupId>
+   <artifactId>TratamentoErro</artifactId>
+   <packaging>ear</packaging>
+   <version>1.0</version>
+   <name>ear assembly</name>
+   <parent>
+      <groupId>br.com.laminarsoft.jazzforms.process.error</groupId>
+      <artifactId>parent</artifactId>
+      <version>1.0</version>
+   </parent>
+   <dependencies>
+      <dependency>
+         <groupId>br.com.laminarsoft.jazzforms.process.error</groupId>
+         <artifactId>TratamentoErroEJB</artifactId>
+         <type>ejb</type>
+         <version>1.0</version>
+      </dependency>
+<!--       <dependency>
+         <groupId>root.project.servlets</groupId>
+         <artifactId>servlet</artifactId>
+         <type>war</type>
+      </dependency>
+      <dependency>
+         <groupId>root.project</groupId>
+         <artifactId>primary-source</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>root.project.projects</groupId>
+         <artifactId>logging</artifactId>
+      </dependency> -->
+   </dependencies>
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>maven-ear-plugin</artifactId>
+            <configuration>
+               <archive>
+                  <manifest>
+                     <addClasspath>true</addClasspath>
+                  </manifest>
+               </archive>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+</project>

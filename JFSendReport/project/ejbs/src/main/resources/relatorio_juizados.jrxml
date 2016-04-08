@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-07-23T16:01:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_juizados" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="382c1757-bd18-4bed-b369-83bb3d2b3720">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="12" isBold="true"/>
+	<subDataset name="DSSentenciados" uuid="cf49a39a-6af0-49f5-93d4-93b0b6c868bf">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select  (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.NO_CIRCUNSCRICAO = f.NO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.NO_CIRCUNSCRICAO = f.NO_CIRCUNSCRICAO ) as quantidade_distribuidos
+, f.NO_CIRCUNSCRICAO 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.NO_CIRCUNSCRICAO = f.NO_CIRCUNSCRICAO ) > 0
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal} 
+group by f.NO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="NO_CIRCUNSCRICAO" class="java.lang.String"/>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+	</subDataset>
+	<subDataset name="DSSentDistBrasilia" uuid="3dc22e32-be60-43ab-bef1-447c083ec445">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '1'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistBrazlandia" uuid="6e5de0f8-9fa6-4bb8-9797-e3a7a0c7ab1c">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '2'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistCeilandia" uuid="20abf0d7-f673-4c42-b05a-3572a8cad744">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '3'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistGama" uuid="8080496f-6e96-4318-9fd9-7f4e6defa1ce">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '4'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0 
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistPlanaltina" uuid="85fa11af-430a-499a-b0ce-2a5d4abc3cc3">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '5'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistSobradinho" uuid="8c658182-4e34-4406-83d2-3926bc88d74e">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '6'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistTaguatinga" uuid="edc74b95-24bd-46bc-b304-48d628551ca4">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '7'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistParanoa" uuid="f50efe24-3976-4677-8f31-4e7a3e91ee56">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '8'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistSamambaia" uuid="b073d48d-60ff-4a32-acc1-acccc8010fbd">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '9'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistSantaMaria" uuid="864c28a8-f0a7-44ce-8c11-3440597795b7">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '10'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistNucleoBandeirante" uuid="befa064f-bbfd-4f61-982f-1e06b2ada9b1">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '11'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistSaoSebastiao" uuid="f532a8dd-75a1-418e-95ca-4c1ef5f44a68">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '12'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistRiachoFundo" uuid="a7f8e90c-4a06-4bdf-be5b-0e309db713c4">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '13'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="DSSentDistGuara" uuid="33b7d138-b4b4-4f2e-8428-01fc6e593956">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLServer-TJSW612"/>
+		<parameter name="dataInicial" class="java.lang.String"/>
+		<parameter name="dataFinal" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select (select case when sum(f1.qtd_ocorrencias) is null then 0 else sum(f1.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f1
+		where f1.item in ('26', '27') 
+		and f1.TIPO_ESTATISTICA = '1'
+		and f1.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f1.CO_ORGAO_VARA = f.CO_ORGAO_VARA
+		and f1.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO ) as quantidade_sentenciados,
+(select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) as quantidade_distribuidos
+, f.CO_ORGAO_VARA 
+from dbo.fato_estatistica_juizo f 
+where f.TIPO_ESTATISTICA = '1'
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.CO_CIRCUNSCRICAO = '14'
+and (select case when sum(f2.qtd_ocorrencias) is null then 0 else sum(f2.qtd_ocorrencias) end 
+		from dbo.fato_estatistica_juizo f2
+		where f2.item in ('1') 
+		and f2.TIPO_ESTATISTICA = '1'
+		and f2.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+		and f2.CO_ORGAO_VARA = f.CO_ORGAO_VARA 
+		and f2.CO_CIRCUNSCRICAO = f.CO_CIRCUNSCRICAO) > 0
+group by f.CO_ORGAO_VARA, f.CO_CIRCUNSCRICAO
+order by quantidade_sentenciados desc]]>
+		</queryString>
+		<field name="quantidade_sentenciados" class="java.math.BigDecimal"/>
+		<field name="quantidade_distribuidos" class="java.math.BigDecimal"/>
+		<field name="CO_ORGAO_VARA" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="codigoCircunscricao" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigoOrgao" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codigoVara" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataInicial" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new String("2014-07-31")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFinal" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new String("2014-12-31")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="coSentenciadoTP1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new String("26")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="coSentenciadoTP2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new String("27")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="coDistribuido" class="java.lang.String">
+		<defaultValueExpression><![CDATA[new String("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="coTramitacao" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new String("48")]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select case when sum(f.qtd_ocorrencias) is null then 0 else sum(f.qtd_ocorrencias) end as quantidade 
+, f.MES_REFERENCIA 
+, f.CO_CIRCUNSCRICAO 
+, f.NO_CIRCUNSCRICAO 
+, f.DESC_ITEM 
+from dbo.fato_estatistica_juizo f 
+where f.item in ( $P{coSentenciadoTP1}  ,  $P{coSentenciadoTP2}  ,  $P{coDistribuido}  ,  $P{coTramitacao} )
+and f.mes_referencia between  $P{dataInicial}  and  $P{dataFinal}
+and f.TIPO_ESTATISTICA = '1' 
+group by f.MES_REFERENCIA, f.CO_CIRCUNSCRICAO, f.NO_CIRCUNSCRICAO, f.DESC_ITEM
+order by no_circunscricao, f.MES_REFERENCIA, f.DESC_ITEM desc]]>
+	</queryString>
+	<field name="quantidade" class="java.math.BigDecimal"/>
+	<field name="MES_REFERENCIA" class="java.sql.Timestamp"/>
+	<field name="CO_CIRCUNSCRICAO" class="java.lang.String"/>
+	<field name="NO_CIRCUNSCRICAO" class="java.lang.String"/>
+	<field name="DESC_ITEM" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="554" height="77" forecolor="#063250" backcolor="#063250" uuid="8954da7f-6910-47e9-ae5c-392ef1b8ed52"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<image>
+				<reportElement x="0" y="0" width="240" height="76" forecolor="#06324F" uuid="45f97465-5224-4bd2-a100-da702a8152b0"/>
+				<imageExpression><![CDATA["./brasao_tjdft.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="240" y="22" width="314" height="39" forecolor="#FFFFFF" uuid="196b21ba-8c39-466a-becc-478d9c6c38c6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tribunal de Justiça do Distrito Federal e dos Territórios
+Secretaria Geral da Corregedoria]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="22" width="250" height="27" uuid="629901d1-2b4c-4a40-8760-81bb648f725d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20"/>
+				</textElement>
+				<text><![CDATA[Estatística dos Juízos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="3" width="50" height="20" uuid="100074cb-8aa1-48d9-ab54-7bce05c06cab">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Início:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="3" width="94" height="20" uuid="590555fe-f2e2-494d-b319-ef7f1002cfb6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="25" width="94" height="20" uuid="3ddcc57b-2654-4174-8c86-78e0d0c1ebf5">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="404" y="25" width="50" height="20" uuid="d6ca4434-5425-4025-aaa1-a7dd4c214736">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Fim:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="250" height="22" forecolor="#693B31" uuid="4ea2d68b-cd40-4c94-91be-0fffe6ba2a81"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Tribunal de Justiça do Distrito Federal e dos Territórios]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="2cf5e7d1-7723-46e0-92c5-8d385a4a4ea4">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" forecolor="#BF6654" uuid="6ead0ec3-d259-4170-a0b0-56c9118d38bf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Circunscrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="1" width="100" height="30" forecolor="#BF6654" uuid="9376667c-21d6-41e2-9ada-a170b2283f7e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Estatística]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="140" height="30" forecolor="#BF6654" uuid="cabbd78f-c7f2-4570-bd6f-8ce1fef90ae1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Mês de Referência]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="100" height="30" forecolor="#BF6654" uuid="c18470fb-2b22-4c2e-ab61-300a78f0b09a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="30" width="555" height="1" uuid="e7feb881-d58f-43d4-9e28-6865c7c8bfb5"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="1f3dee0c-ed08-477c-8b8d-391818d916f3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textField>
+					<reportElement x="0" y="0" width="130" height="15" uuid="948424be-3e77-47be-a3ef-9557cf8a89cc"/>
+					<textFieldExpression><![CDATA[$F{NO_CIRCUNSCRICAO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="130" y="0" width="130" height="15" uuid="f3d16b7b-0609-4d0e-a152-92cd95fea6fc"/>
+					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("yyyy-MM").format($F{MES_REFERENCIA})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="280" y="0" width="130" height="15" uuid="8b92b2d6-a921-45e4-9c11-0962a18e6359"/>
+					<textFieldExpression><![CDATA[$F{DESC_ITEM}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="0" width="125" height="15" uuid="e10c3133-2d90-4c10-b5f0-299e99c630b6"/>
+					<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="12" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="3a3e5102-2bdd-44ff-a01b-5ad6e45bf092"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="50">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="b0394a70-3634-4860-9301-65ab93c73467"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343" uuid="ccac5ddd-3660-4492-a5e7-8e231ce9461d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343" uuid="496e287f-1a23-422c-a566-ade7ee9f0130"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="b2b498df-d94f-40fe-8919-8c86f47e53de"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[java.text.DateFormat.getDateInstance(DateFormat.FULL, new java.util.Locale("pt", "BR")).format(new java.util.Date())]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="6100" splitType="Immediate">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<barChart>
+				<chart isShowLegend="true" evaluationTime="Report">
+					<reportElement x="0" y="30" width="555" height="400" isPrintInFirstWholeBand="true" uuid="de4e85a2-9dad-497f-a78c-84233aba1796"/>
+					<chartTitle>
+						<font size="20" isBold="true"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos no período por circunscrição")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle>
+						<subtitleExpression><![CDATA[$P{dataInicial} + new String(" a ") + $P{dataFinal}]]></subtitleExpression>
+					</chartSubtitle>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentenciados" uuid="cce83c4c-3263-4c55-9c78-059a6da2fc06">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{NO_CIRCUNSCRICAO}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue() - $F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{NO_CIRCUNSCRICAO}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="500" width="555" height="630" uuid="1a0250e5-12a2-491f-aff5-f09a17e64ba5"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Brasília")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistBrasilia" uuid="96d1bce3-31a9-4c63-885d-190e2c303d29">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="1240" width="555" height="370" uuid="c21a8ed1-d85c-4a84-b5db-530c8f4ecc4a"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Brazlândia")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistBrazlandia" uuid="f15bcdc7-b8af-4c12-9ab5-981a03e84dc1">
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="1700" width="555" height="370" uuid="401e4a0e-ae79-4712-a739-78f5ab42186c"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Ceilândia")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistCeilandia" uuid="83a97fc6-3f60-49f8-a954-bf168fb40976">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="2100" width="555" height="370" uuid="fed9a011-dd3e-436f-be4b-dd672c39a519"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Brazlândia")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistGama" uuid="a4b14f4e-11c4-4904-a71a-7f7eb8f52a4b">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="2510" width="555" height="370" uuid="7a6335bd-eaf8-4dc6-94b8-292dead7e585"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Planaltina")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistPlanaltina" uuid="96f9932c-2476-42c2-aefb-16b437173b88">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="1" y="2910" width="555" height="370" uuid="1fe3cb81-a85b-4b48-b673-2b3526da1eb7"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Taguatinga")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistTaguatinga" uuid="06fff4e8-cbce-4ef0-932a-75c376b5fb63">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="3340" width="555" height="370" uuid="d9573398-c41a-49da-8f8a-2fb241c70dbc"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Paranoá")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistParanoa" uuid="9b7a6449-106b-4932-83d3-b5451cd6972c">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="3730" width="555" height="370" uuid="fb5e5760-476e-4804-b170-0b778c0797ee"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Samambaia")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistSamambaia" uuid="c8a5e7cf-3ff5-47b1-981a-5380719d0955">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="4121" width="555" height="370" uuid="7b13cdc8-c477-41bd-a04b-efcceff61dee"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Santa Maria")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistSantaMaria" uuid="eb105969-4ea3-4552-83bf-10f381bc0f92">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="4500" width="555" height="370" uuid="5fcce8d5-5431-4798-ac2d-021700c08a1c"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Núcleo Bandeirante")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistNucleoBandeirante" uuid="8652cb06-4d11-4c76-acc4-a4ee0cab0f29">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="1" y="4900" width="555" height="370" uuid="4b48404e-ae68-43f5-bf7a-75ba9b38b63c"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em São Sebastião")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistSaoSebastiao" uuid="07448421-a179-4139-85ed-e478efc8edc1">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="5292" width="555" height="370" uuid="8286fafb-4992-4584-a7f6-55855e0b9bf3"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Riacho Fundo")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistRiachoFundo" uuid="8b43cfc8-40cf-4b85-859c-5d1378b531ba">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[new String("")]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="5684" width="555" height="370" uuid="305a1739-6369-444b-81d8-c8deb602ded3"/>
+					<chartTitle>
+						<font size="20"/>
+						<titleExpression><![CDATA[new String("Sentenciados/Distribuídos por órgão em Guará")]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="DSSentDistGuara" uuid="1684b3d9-6204-4c4c-90c0-77451978af93">
+							<datasetParameter name="dataInicial">
+								<datasetParameterExpression><![CDATA[$P{dataInicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="dataFinal">
+								<datasetParameterExpression><![CDATA[$P{dataFinal}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{CO_ORGAO_VARA}]]></seriesExpression>
+						<categoryExpression><![CDATA[0]]></categoryExpression>
+						<valueExpression><![CDATA[Math.round(($F{quantidade_sentenciados}.longValue()-$F{quantidade_distribuidos}.longValue())*100/$F{quantidade_distribuidos}.longValue())]]></valueExpression>
+						<labelExpression><![CDATA[$F{CO_ORGAO_VARA}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

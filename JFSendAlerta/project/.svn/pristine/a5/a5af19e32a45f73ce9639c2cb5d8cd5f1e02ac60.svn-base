@@ -1,0 +1,12 @@
+from=cosist@tjdft.jus.br
+to=alison@laminarsoft.com.br
+subject=Relatório
+
+smtp.autenticacao=false
+smtp.server=tjro757v.tribunal.tjdft.jus.br
+smtp.port=25
+usuario.smtp=
+senha.smtp=
+
+connection.jndi.relatorio_juizados=java:jboss/datasources/cosistESTATISTICAS_DS
+caminho.jasper=c:/jazzforms/jasperreports/

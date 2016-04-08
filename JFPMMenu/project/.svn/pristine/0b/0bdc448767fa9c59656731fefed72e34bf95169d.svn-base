@@ -1,0 +1,26 @@
+import org.drools.process.core.datatype.impl.type.StringDataType;
+import br.com.laminarsoft.jazzforms.process.connector.jfformout.handler.IJazzProcessOutParameters;
+[
+  [
+    "name" : "JFFormOut",
+    "description" : "Prepara formulário para ser enviado aos destinatários",
+    "parameters" : [
+    	"databaseJNDI" : new StringDataType(),
+		"userGroups" : new StringDataType(),
+		"users" : new StringDataType(),
+		"processName" : new StringDataType(),
+		"activityName" : new StringDataType(),
+		"txtCorpoMensagem" : new StringDataType(),
+        "txtTituloMensagem" : new StringDataType(),
+        "txtUsuarioOrigem" : new StringDataType(),
+        "processId" : new StringDataType(),
+        "sessionId" : new StringDataType(),
+		"valores" : new IJazzProcessOutParameters()
+    ],
+    "displayName" : "JF Form Out",
+    "icon" : "pictures/jazz.png",
+    "category" : "Communication",
+    "defaultHandler" : "br.com.laminarsoft.jazzforms.process.connector.jfformout.handler.JFFormOutHandler",
+    "documentation" : "index.html"
+  ]
+]

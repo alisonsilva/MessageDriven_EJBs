@@ -1,0 +1,11 @@
+<jboss-deployment-structure>
+
+   <deployment>
+
+      <dependencies>
+         <module name="jazzit.archetypes" />
+      </dependencies>
+
+   </deployment>
+
+</jboss-deployment-structure>

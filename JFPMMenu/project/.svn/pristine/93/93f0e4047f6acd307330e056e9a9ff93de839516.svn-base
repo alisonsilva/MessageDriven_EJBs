@@ -1,0 +1,5 @@
+[
+  "JFFormOut" : new br.com.laminarsoft.jazzforms.process.connector.jfformout.handler.JFFormOutHandler()
+,
+  "JFNotificacaoAndamento": new br.com.laminarsoft.jazzforms.process.menu.handlers.WIHNotificacaoAndamentoHandler()
+]

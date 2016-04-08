@@ -1,0 +1,20 @@
+import org.drools.process.core.datatype.impl.type.StringDataType;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemOcorrencia;
+import br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido;
+[
+  [
+    "name" : "JFContabilizaPedido",
+    "description" : "Contabiliza pedido para cadastro do cliente",
+    "parameters" : [
+        "pedido" : new JFMensagemPedido(),
+        "codigo" : new StringDataType(),
+        "conteudo" : new StringDataType()
+    ],
+    "displayName" : "JF Contabiliza Pedido",
+    "icon" : "pictures/filled-box.png",
+    "category" : "Communication",
+    "defaultHandler" : "br.com.laminarsoft.jazzforms.process.menu.handlers.WIHContabilizaPedido",
+    "documentation" : "index.html"
+  ]
+]

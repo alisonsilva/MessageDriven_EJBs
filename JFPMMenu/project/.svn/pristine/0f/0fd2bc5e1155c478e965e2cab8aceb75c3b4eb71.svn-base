@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="ItemDefinition_1" structureRef="JFMensagemPedido"/>
+  <bpmn2:itemDefinition id="ItemDefinition_2" structureRef="StringDataType"/>
+  <bpmn2:itemDefinition id="ItemDefinition_3" structureRef="br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido"/>
+  <bpmn2:process id="br.com.laminarsoft.jazzforms.processo.gerenciamentopedido.pm_GerenciamentoPagamento" tns:version="1" tns:packageName="br.com.laminarsoft.jazzforms.processo.gerenciamentopedido" tns:adHoc="false" name="pm_GerenciamentoPagamento" isExecutable="true" processType="Private">
+    <bpmn2:extensionElements>
+      <tns:import name="br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido"/>
+    </bpmn2:extensionElements>
+    <bpmn2:property id="_pedido" itemSubjectRef="ItemDefinition_3"/>
+    <bpmn2:property id="_processId" itemSubjectRef="ItemDefinition_2"/>
+    <bpmn2:property id="_sessionId" itemSubjectRef="ItemDefinition_2"/>
+    <bpmn2:startEvent id="_1" name="">
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" tns:priority="1" sourceRef="_1" targetRef="Task_1"/>
+    <bpmn2:task id="Task_1" tns:taskName="JFOcorrencia" tns:displayName="JF Ocorrencia" tns:icon="pictures/database.png" name="Novo pagamento">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="_InputOutputSpecification_44">
+        <bpmn2:dataInput id="_DataInput_182" itemSubjectRef="ItemDefinition_3" name="pedido"/>
+        <bpmn2:dataInput id="_DataInput_183" itemSubjectRef="ItemDefinition_2" name="codigo"/>
+        <bpmn2:dataInput id="_DataInput_184" name="conteudo"/>
+        <bpmn2:inputSet id="_InputSet_105"/>
+        <bpmn2:inputSet id="_InputSet_106" name="New Input Set">
+          <bpmn2:dataInputRefs>_DataInput_182</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_183</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_184</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="_OutputSet_44"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_182">
+        <bpmn2:sourceRef>_pedido</bpmn2:sourceRef>
+        <bpmn2:targetRef>_DataInput_182</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_183">
+        <bpmn2:targetRef>_DataInput_183</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_1">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">_DataInput_183</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_184">
+        <bpmn2:targetRef>_DataInput_184</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_2">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">Novo pagamento</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">_DataInput_184</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:task>
+    <bpmn2:endEvent id="EndEvent_1" name="">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_1"/>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" tns:priority="1" sourceRef="Task_1" targetRef="EndEvent_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="pm_GerenciamentoPagamento">
+    <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="br.com.laminarsoft.jazzforms.processo.gerenciamentopedido.pm_GerenciamentoPagamento">
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="_1">
+        <dc:Bounds height="36.0" width="36.0" x="180.0" y="180.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_1" bpmnElement="Task_1">
+        <dc:Bounds height="50.0" width="110.0" x="340.0" y="173.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="518.0" y="180.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_Task_1">
+        <di:waypoint xsi:type="dc:Point" x="216.0" y="198.0"/>
+        <di:waypoint xsi:type="dc:Point" x="271.0" y="198.0"/>
+        <di:waypoint xsi:type="dc:Point" x="271.0" y="198.0"/>
+        <di:waypoint xsi:type="dc:Point" x="340.0" y="198.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_Task_1" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="450.0" y="198.0"/>
+        <di:waypoint xsi:type="dc:Point" x="480.0" y="198.0"/>
+        <di:waypoint xsi:type="dc:Point" x="480.0" y="198.0"/>
+        <di:waypoint xsi:type="dc:Point" x="518.0" y="198.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

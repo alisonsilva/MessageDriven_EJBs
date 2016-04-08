@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.jboss.org/drools" xmlns="http://www.jboss.org/drools" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" id="Definition" expressionLanguage="http://www.mvel.org/2.0" targetNamespace="http://www.jboss.org/drools" typeLanguage="http://www.java.com/javaTypes">
+  <bpmn2:itemDefinition id="ItemDefinition_1" structureRef="br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido"/>
+  <bpmn2:itemDefinition id="_String" structureRef="String"/>
+  <bpmn2:itemDefinition id="ItemDefinition_2" structureRef="br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido"/>
+  <bpmn2:itemDefinition id="ItemDefinition_3" structureRef="JFMensagemPedido"/>
+  <bpmn2:itemDefinition id="ItemDefinition_4" structureRef="StringDataType"/>
+  <bpmn2:itemDefinition id="ItemDefinition_5" structureRef="IJazzProcessOutParameters"/>
+  <bpmn2:message id="mensagem_andamento" itemRef="ItemDefinition_2" name="mensagem_andamento"/>
+  <bpmn2:process id="br.com.laminarsoft.jazzforms.processo.gerenciamentopedido.pm_GerenciamentoPedido" tns:version="1" tns:packageName="br.com.laminarsoft.jazzforms.processo.gerenciamentopedido" tns:adHoc="false" name="pm_GerenciamentoPedido" isExecutable="true" processType="Private">
+    <bpmn2:extensionElements>
+      <tns:import name="br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemPedido"/>
+      <tns:import name="br.com.laminarsoft.jazzit.processo.limpatrilho.type.JFMensagemAndamentoPedido"/>
+    </bpmn2:extensionElements>
+    <bpmn2:property id="_pedido" itemSubjectRef="ItemDefinition_1"/>
+    <bpmn2:property id="_processId" itemSubjectRef="_String"/>
+    <bpmn2:property id="_sessionId" itemSubjectRef="_String"/>
+    <bpmn2:property id="_mensagemAndamento" itemSubjectRef="ItemDefinition_2"/>
+    <bpmn2:subProcess id="SubProcess_1" name="Fabrica pedido">
+      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:startEvent id="StartEvent_1" name="">
+        <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      </bpmn2:startEvent>
+      <bpmn2:sequenceFlow id="SequenceFlow_4" tns:priority="1" name="" sourceRef="StartEvent_1" targetRef="Task_2"/>
+      <bpmn2:task id="Task_2" tns:taskName="JFFormOut" tns:displayName="JF Form Out" tns:icon="pictures/jazz.png" name="Notifica fabricacao pedido">
+        <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+        <bpmn2:ioSpecification id="_InputOutputSpecification_46">
+          <bpmn2:dataInput id="_DataInput_188" itemSubjectRef="ItemDefinition_4" name="databaseJNDI"/>
+          <bpmn2:dataInput id="_DataInput_189" itemSubjectRef="ItemDefinition_4" name="userGroups"/>
+          <bpmn2:dataInput id="_DataInput_190" itemSubjectRef="ItemDefinition_4" name="users"/>
+          <bpmn2:dataInput id="_DataInput_191" itemSubjectRef="ItemDefinition_4" name="processName"/>
+          <bpmn2:dataInput id="_DataInput_192" itemSubjectRef="ItemDefinition_4" name="activityName"/>
+          <bpmn2:dataInput id="_DataInput_193" itemSubjectRef="ItemDefinition_4" name="txtCorpoMensagem"/>
+          <bpmn2:dataInput id="_DataInput_194" itemSubjectRef="ItemDefinition_4" name="txtTituloMensagem"/>
+          <bpmn2:dataInput id="_DataInput_195" itemSubjectRef="ItemDefinition_4" name="txtUsuarioOrigem"/>
+          <bpmn2:dataInput id="_DataInput_196" itemSubjectRef="ItemDefinition_4" name="processId"/>
+          <bpmn2:dataInput id="_DataInput_197" itemSubjectRef="ItemDefinition_4" name="sessionId"/>
+          <bpmn2:dataInput id="_DataInput_198" itemSubjectRef="ItemDefinition_5" name="valores"/>
+          <bpmn2:inputSet id="_InputSet_109"/>
+          <bpmn2:inputSet id="_InputSet_110" name="New Input Set">
+            <bpmn2:dataInputRefs>_DataInput_188</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_189</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_190</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_191</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_192</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_193</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_194</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_195</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_196</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_197</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_198</bpmn2:dataInputRefs>
+          </bpmn2:inputSet>
+          <bpmn2:outputSet id="_OutputSet_46"/>
+        </bpmn2:ioSpecification>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_188">
+          <bpmn2:targetRef>_DataInput_188</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_189">
+          <bpmn2:targetRef>_DataInput_189</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_190">
+          <bpmn2:targetRef>_DataInput_190</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_191">
+          <bpmn2:targetRef>_DataInput_191</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_192">
+          <bpmn2:targetRef>_DataInput_192</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_193">
+          <bpmn2:targetRef>_DataInput_193</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_194">
+          <bpmn2:targetRef>_DataInput_194</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_195">
+          <bpmn2:targetRef>_DataInput_195</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_196">
+          <bpmn2:targetRef>_DataInput_196</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_197">
+          <bpmn2:targetRef>_DataInput_197</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_198">
+          <bpmn2:targetRef>_DataInput_198</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+      </bpmn2:task>
+      <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_1" name="Fabricacao finalizada">
+        <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+        <bpmn2:dataOutput id="DataOutput_1" itemSubjectRef="ItemDefinition_2" name="Message_1_Output"/>
+        <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+          <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+          <bpmn2:targetRef>_mensagemAndamento</bpmn2:targetRef>
+        </bpmn2:dataOutputAssociation>
+        <bpmn2:outputSet id="OutputSet_1" name="Output Set 1">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+        <bpmn2:messageEventDefinition id="MessageEventDefinition_1" messageRef="mensagem_andamento"/>
+      </bpmn2:intermediateCatchEvent>
+      <bpmn2:sequenceFlow id="SequenceFlow_5" tns:priority="1" name="" sourceRef="Task_2" targetRef="IntermediateCatchEvent_1"/>
+      <bpmn2:sequenceFlow id="SequenceFlow_6" tns:priority="1" name="" sourceRef="IntermediateCatchEvent_1" targetRef="Task_3"/>
+      <bpmn2:task id="Task_3" tns:taskName="JFOcorrencia" tns:displayName="JF Ocorrencia" tns:icon="pictures/database.png" name="OCR Fim fabricacao">
+        <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+        <bpmn2:ioSpecification id="_InputOutputSpecification_47">
+          <bpmn2:dataInput id="_DataInput_199" itemSubjectRef="ItemDefinition_1" name="pedido"/>
+          <bpmn2:dataInput id="_DataInput_200" itemSubjectRef="ItemDefinition_4" name="codigo"/>
+          <bpmn2:dataInput id="_DataInput_201" itemSubjectRef="ItemDefinition_4" name="conteudo"/>
+          <bpmn2:inputSet id="_InputSet_111"/>
+          <bpmn2:inputSet id="_InputSet_112" name="New Input Set">
+            <bpmn2:dataInputRefs>_DataInput_199</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_200</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_201</bpmn2:dataInputRefs>
+          </bpmn2:inputSet>
+          <bpmn2:outputSet id="_OutputSet_47"/>
+        </bpmn2:ioSpecification>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_199">
+          <bpmn2:sourceRef>_pedido</bpmn2:sourceRef>
+          <bpmn2:targetRef>_DataInput_199</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_200">
+          <bpmn2:targetRef>_DataInput_200</bpmn2:targetRef>
+          <bpmn2:assignment id="Assignment_3">
+            <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9">2</bpmn2:from>
+            <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_7">_DataInput_200</bpmn2:to>
+          </bpmn2:assignment>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_201">
+          <bpmn2:targetRef>_DataInput_201</bpmn2:targetRef>
+          <bpmn2:assignment id="Assignment_4">
+            <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_12">Finalização da fabriação</bpmn2:from>
+            <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10">_DataInput_201</bpmn2:to>
+          </bpmn2:assignment>
+        </bpmn2:dataInputAssociation>
+      </bpmn2:task>
+      <bpmn2:sequenceFlow id="SequenceFlow_7" tns:priority="1" name="" sourceRef="Task_3" targetRef="EndEvent_2"/>
+      <bpmn2:endEvent id="EndEvent_2" name="">
+        <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      </bpmn2:endEvent>
+    </bpmn2:subProcess>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" tns:priority="1" name="" sourceRef="SubProcess_1" targetRef="SubProcess_2"/>
+    <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="SubProcess_1" cancelActivity="false">
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:timerEventDefinition id="TimerEventDefinition_1">
+        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">3m</bpmn2:timeDuration>
+      </bpmn2:timerEventDefinition>
+    </bpmn2:boundaryEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" tns:priority="1" name="" sourceRef="BoundaryEvent_1" targetRef="Task_4"/>
+    <bpmn2:task id="Task_4" tns:taskName="JFOcorrencia" tns:displayName="JF Ocorrencia" tns:icon="pictures/database.png" name="OCR Timeout fabricacao">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="_InputOutputSpecification_48">
+        <bpmn2:dataInput id="_DataInput_202" itemSubjectRef="ItemDefinition_1" name="pedido"/>
+        <bpmn2:dataInput id="_DataInput_203" itemSubjectRef="ItemDefinition_4" name="codigo"/>
+        <bpmn2:dataInput id="_DataInput_204" itemSubjectRef="ItemDefinition_4" name="conteudo"/>
+        <bpmn2:inputSet id="_InputSet_113"/>
+        <bpmn2:inputSet id="_InputSet_114" name="New Input Set">
+          <bpmn2:dataInputRefs>_DataInput_202</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_203</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_204</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="_OutputSet_48"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_202">
+        <bpmn2:sourceRef>_pedido</bpmn2:sourceRef>
+        <bpmn2:targetRef>_DataInput_202</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_203">
+        <bpmn2:targetRef>_DataInput_203</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_5">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_15">3</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_13">_DataInput_203</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_204">
+        <bpmn2:targetRef>_DataInput_204</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_6">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18">Timeout na fabricação</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">_DataInput_204</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" tns:priority="1" name="" sourceRef="Task_4" targetRef="EndEvent_4"/>
+    <bpmn2:endEvent id="EndEvent_4" name="">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:endEvent id="EndEvent_6" name="">
+      <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:task id="Task_7" tns:taskName="JFOcorrencia" tns:displayName="JF Ocorrencia" tns:icon="pictures/database.png" name="OCR Timeout entrega pedido">
+      <bpmn2:incoming>SequenceFlow_16</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="_InputOutputSpecification_51">
+        <bpmn2:dataInput id="_DataInput_219" itemSubjectRef="ItemDefinition_3" name="pedido"/>
+        <bpmn2:dataInput id="_DataInput_220" itemSubjectRef="ItemDefinition_4" name="codigo"/>
+        <bpmn2:dataInput id="_DataInput_221" itemSubjectRef="ItemDefinition_4" name="conteudo"/>
+        <bpmn2:inputSet id="_InputSet_119"/>
+        <bpmn2:inputSet id="_InputSet_120" name="New Input Set">
+          <bpmn2:dataInputRefs>_DataInput_219</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_220</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_221</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="_OutputSet_51"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_219">
+        <bpmn2:targetRef>_DataInput_219</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_220">
+        <bpmn2:targetRef>_DataInput_220</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_221">
+        <bpmn2:targetRef>_DataInput_221</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_17" tns:priority="1" name="" sourceRef="Task_7" targetRef="EndEvent_6"/>
+    <bpmn2:subProcess id="SubProcess_2" name="Entrega pedido">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
+      <bpmn2:startEvent id="StartEvent_2" name="">
+        <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+      </bpmn2:startEvent>
+      <bpmn2:sequenceFlow id="SequenceFlow_12" tns:priority="1" name="" sourceRef="StartEvent_2" targetRef="Task_5"/>
+      <bpmn2:task id="Task_5" tns:taskName="JFFormOut" tns:displayName="JF Form Out" tns:icon="pictures/jazz.png" name="Notifica entrega pedido">
+        <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+        <bpmn2:ioSpecification id="_InputOutputSpecification_49">
+          <bpmn2:dataInput id="_DataInput_205" itemSubjectRef="ItemDefinition_4" name="databaseJNDI"/>
+          <bpmn2:dataInput id="_DataInput_206" itemSubjectRef="ItemDefinition_4" name="userGroups"/>
+          <bpmn2:dataInput id="_DataInput_207" itemSubjectRef="ItemDefinition_4" name="users"/>
+          <bpmn2:dataInput id="_DataInput_208" itemSubjectRef="ItemDefinition_4" name="processName"/>
+          <bpmn2:dataInput id="_DataInput_209" itemSubjectRef="ItemDefinition_4" name="activityName"/>
+          <bpmn2:dataInput id="_DataInput_210" itemSubjectRef="ItemDefinition_4" name="txtCorpoMensagem"/>
+          <bpmn2:dataInput id="_DataInput_211" itemSubjectRef="ItemDefinition_4" name="txtTituloMensagem"/>
+          <bpmn2:dataInput id="_DataInput_212" itemSubjectRef="ItemDefinition_4" name="txtUsuarioOrigem"/>
+          <bpmn2:dataInput id="_DataInput_213" itemSubjectRef="ItemDefinition_4" name="processId"/>
+          <bpmn2:dataInput id="_DataInput_214" itemSubjectRef="ItemDefinition_4" name="sessionId"/>
+          <bpmn2:dataInput id="_DataInput_215" itemSubjectRef="ItemDefinition_5" name="valores"/>
+          <bpmn2:inputSet id="_InputSet_115"/>
+          <bpmn2:inputSet id="_InputSet_116" name="New Input Set">
+            <bpmn2:dataInputRefs>_DataInput_205</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_206</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_207</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_208</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_209</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_210</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_211</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_212</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_213</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_214</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_215</bpmn2:dataInputRefs>
+          </bpmn2:inputSet>
+          <bpmn2:outputSet id="_OutputSet_49"/>
+        </bpmn2:ioSpecification>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_205">
+          <bpmn2:targetRef>_DataInput_205</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_206">
+          <bpmn2:targetRef>_DataInput_206</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_207">
+          <bpmn2:targetRef>_DataInput_207</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_208">
+          <bpmn2:targetRef>_DataInput_208</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_209">
+          <bpmn2:targetRef>_DataInput_209</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_210">
+          <bpmn2:targetRef>_DataInput_210</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_211">
+          <bpmn2:targetRef>_DataInput_211</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_212">
+          <bpmn2:targetRef>_DataInput_212</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_213">
+          <bpmn2:targetRef>_DataInput_213</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_214">
+          <bpmn2:targetRef>_DataInput_214</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_215">
+          <bpmn2:targetRef>_DataInput_215</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+      </bpmn2:task>
+      <bpmn2:intermediateCatchEvent id="IntermediateCatchEvent_2" name="Pedido entregue">
+        <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+        <bpmn2:dataOutput id="DataOutput_2" itemSubjectRef="ItemDefinition_2" name="Message_2_Output"/>
+        <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
+          <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
+          <bpmn2:targetRef>_mensagemAndamento</bpmn2:targetRef>
+        </bpmn2:dataOutputAssociation>
+        <bpmn2:outputSet id="OutputSet_2" name="Output Set 2">
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+        <bpmn2:messageEventDefinition id="MessageEventDefinition_2" messageRef="mensagem_andamento"/>
+      </bpmn2:intermediateCatchEvent>
+      <bpmn2:sequenceFlow id="SequenceFlow_13" tns:priority="1" name="" sourceRef="Task_5" targetRef="IntermediateCatchEvent_2"/>
+      <bpmn2:sequenceFlow id="SequenceFlow_14" tns:priority="1" name="" sourceRef="IntermediateCatchEvent_2" targetRef="Task_6"/>
+      <bpmn2:task id="Task_6" tns:taskName="JFOcorrencia" tns:displayName="JF Ocorrencia" tns:icon="pictures/database.png" name="OCR Pedido entregue">
+        <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+        <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
+        <bpmn2:ioSpecification id="_InputOutputSpecification_50">
+          <bpmn2:dataInput id="_DataInput_216" itemSubjectRef="ItemDefinition_3" name="pedido"/>
+          <bpmn2:dataInput id="_DataInput_217" itemSubjectRef="ItemDefinition_4" name="codigo"/>
+          <bpmn2:dataInput id="_DataInput_218" itemSubjectRef="ItemDefinition_4" name="conteudo"/>
+          <bpmn2:inputSet id="_InputSet_117"/>
+          <bpmn2:inputSet id="_InputSet_118" name="New Input Set">
+            <bpmn2:dataInputRefs>_DataInput_216</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_217</bpmn2:dataInputRefs>
+            <bpmn2:dataInputRefs>_DataInput_218</bpmn2:dataInputRefs>
+          </bpmn2:inputSet>
+          <bpmn2:outputSet id="_OutputSet_50"/>
+        </bpmn2:ioSpecification>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_216">
+          <bpmn2:targetRef>_DataInput_216</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_217">
+          <bpmn2:targetRef>_DataInput_217</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+        <bpmn2:dataInputAssociation id="_DataInputAssociation_218">
+          <bpmn2:targetRef>_DataInput_218</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+      </bpmn2:task>
+      <bpmn2:sequenceFlow id="SequenceFlow_15" tns:priority="1" name="" sourceRef="Task_6" targetRef="EndEvent_5"/>
+      <bpmn2:endEvent id="EndEvent_5" name="">
+        <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      </bpmn2:endEvent>
+    </bpmn2:subProcess>
+    <bpmn2:sequenceFlow id="SequenceFlow_19" tns:priority="1" name="" sourceRef="SubProcess_2" targetRef="Task_9"/>
+    <bpmn2:boundaryEvent id="BoundaryEvent_2" name="" attachedToRef="SubProcess_2" cancelActivity="false">
+      <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
+      <bpmn2:timerEventDefinition id="TimerEventDefinition_2">
+        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression" id="FormalExpression_21">10m</bpmn2:timeDuration>
+      </bpmn2:timerEventDefinition>
+    </bpmn2:boundaryEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_16" tns:priority="1" name="" sourceRef="BoundaryEvent_2" targetRef="Task_7"/>
+    <bpmn2:task id="Task_9" tns:taskName="JFContabilizaPedido" tns:displayName="JF Contabiliza Pedido" tns:icon="pictures/filled-box.png" name="Contabilizar pedido">
+      <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_18</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="_InputOutputSpecification_53">
+        <bpmn2:dataInput id="_DataInput_227" itemSubjectRef="ItemDefinition_1" name="pedido"/>
+        <bpmn2:dataInput id="_DataInput_228" name="codigo"/>
+        <bpmn2:dataInput id="_DataInput_229" itemSubjectRef="ItemDefinition_4" name="conteudo"/>
+        <bpmn2:inputSet id="_InputSet_123"/>
+        <bpmn2:inputSet id="_InputSet_124" name="New Input Set">
+          <bpmn2:dataInputRefs>_DataInput_227</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_228</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_229</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="_OutputSet_53"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_227">
+        <bpmn2:sourceRef>_pedido</bpmn2:sourceRef>
+        <bpmn2:targetRef>_DataInput_227</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_228">
+        <bpmn2:targetRef>_DataInput_228</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_11">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_27">_DataInput_228</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_229">
+        <bpmn2:targetRef>_DataInput_229</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_12">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_32">conteudo</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_30">_DataInput_229</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_18" tns:priority="1" sourceRef="Task_9" targetRef="EndEvent_7"/>
+    <bpmn2:endEvent id="EndEvent_7" name="">
+      <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
+      <bpmn2:terminateEventDefinition id="TerminateEventDefinition_3"/>
+    </bpmn2:endEvent>
+    <bpmn2:task id="Task_8" tns:taskName="JFOcorrencia" tns:displayName="JF Ocorrencia" tns:icon="pictures/database.png" name="OCR Novo pedido">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="_InputOutputSpecification_52">
+        <bpmn2:dataInput id="_DataInput_222" itemSubjectRef="ItemDefinition_1" name="pedido"/>
+        <bpmn2:dataInput id="_DataInput_223" name="codigo"/>
+        <bpmn2:dataInput id="_DataInput_224" itemSubjectRef="ItemDefinition_4" name="conteudo"/>
+        <bpmn2:dataInput id="_DataInput_225" name="processName"/>
+        <bpmn2:dataInput id="_DataInput_226" itemSubjectRef="_String" name="processInstanceID"/>
+        <bpmn2:inputSet id="_InputSet_121"/>
+        <bpmn2:inputSet id="_InputSet_122" name="New Input Set">
+          <bpmn2:dataInputRefs>_DataInput_222</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_223</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_224</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_225</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_DataInput_226</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="_OutputSet_52"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_222">
+        <bpmn2:sourceRef>_pedido</bpmn2:sourceRef>
+        <bpmn2:targetRef>_DataInput_222</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_223">
+        <bpmn2:targetRef>_DataInput_223</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_9">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_23">1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20">_DataInput_223</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_224">
+        <bpmn2:targetRef>_DataInput_224</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_10">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_26">Novo pedido</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_24">_DataInput_224</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_225">
+        <bpmn2:targetRef>_DataInput_225</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_17">br.com.laminarsoft.jazzforms.processo.gerenciamentopedido.pm_GerenciamentoPedido</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_11">_DataInput_225</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_DataInputAssociation_226">
+        <bpmn2:sourceRef>_processId</bpmn2:sourceRef>
+        <bpmn2:targetRef>_DataInput_226</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:task>
+    <bpmn2:sequenceFlow id="SequenceFlow_8" tns:priority="1" sourceRef="Task_8" targetRef="SubProcess_1"/>
+    <bpmn2:startEvent id="_1" name="">
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" tns:priority="1" sourceRef="_1" targetRef="Task_8"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="pm_GerenciamentoPedido">
+    <bpmndi:BPMNPlane id="BPMNPlane_Process_1" bpmnElement="br.com.laminarsoft.jazzforms.processo.gerenciamentopedido.pm_GerenciamentoPedido">
+      <bpmndi:BPMNShape id="BPMNShape_SubProcess_1" bpmnElement="SubProcess_1" isExpanded="true">
+        <dc:Bounds height="300.0" width="601.0" x="510.0" y="170.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_SubProcess_2" bpmnElement="SubProcess_2" isExpanded="true">
+        <dc:Bounds height="300.0" width="612.0" x="505.0" y="540.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="_1">
+        <dc:Bounds height="36.0" width="36.0" x="150.0" y="304.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="550.0" y="303.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_2" bpmnElement="Task_2">
+        <dc:Bounds height="67.0" width="131.0" x="650.0" y="287.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_IntermediateCatchEvent_1" bpmnElement="IntermediateCatchEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="849.0" y="302.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="1020.0" y="302.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_3" bpmnElement="Task_3">
+        <dc:Bounds height="50.0" width="110.0" x="900.0" y="372.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_4" bpmnElement="EndEvent_4">
+        <dc:Bounds height="36.0" width="36.0" x="824.0" y="83.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_BoundaryEvent_1" bpmnElement="BoundaryEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="550.0" y="152.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_4" bpmnElement="Task_4">
+        <dc:Bounds height="62.0" width="127.0" x="632.0" y="70.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_3" bpmnElement="StartEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="525.0" y="672.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_5" bpmnElement="Task_5">
+        <dc:Bounds height="66.0" width="118.0" x="643.0" y="658.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_IntermediateCatchEvent_2" bpmnElement="IntermediateCatchEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="829.0" y="673.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_6" bpmnElement="Task_6">
+        <dc:Bounds height="50.0" width="110.0" x="883.0" y="740.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_5" bpmnElement="EndEvent_5">
+        <dc:Bounds height="36.0" width="36.0" x="1005.0" y="672.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_6" bpmnElement="EndEvent_6">
+        <dc:Bounds height="36.0" width="36.0" x="856.0" y="901.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_7" bpmnElement="EndEvent_7">
+        <dc:Bounds height="36.0" width="36.0" x="1360.0" y="727.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_7" bpmnElement="Task_7">
+        <dc:Bounds height="61.0" width="121.0" x="635.0" y="888.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_BoundaryEvent_2" bpmnElement="BoundaryEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="536.0" y="822.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_9" bpmnElement="Task_9">
+        <dc:Bounds height="50.0" width="110.0" x="1200.0" y="720.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Task_8" bpmnElement="Task_8">
+        <dc:Bounds height="50.0" width="110.0" x="280.0" y="296.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_StartEvent_2" targetElement="BPMNShape_Task_2">
+        <di:waypoint xsi:type="dc:Point" x="586.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="614.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="614.0" y="320.0"/>
+        <di:waypoint xsi:type="dc:Point" x="650.0" y="320.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_Task_2" targetElement="BPMNShape_IntermediateCatchEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="781.0" y="320.0"/>
+        <di:waypoint xsi:type="dc:Point" x="811.0" y="320.0"/>
+        <di:waypoint xsi:type="dc:Point" x="811.0" y="320.0"/>
+        <di:waypoint xsi:type="dc:Point" x="849.0" y="320.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_IntermediateCatchEvent_1" targetElement="BPMNShape_Task_3">
+        <di:waypoint xsi:type="dc:Point" x="867.0" y="338.0"/>
+        <di:waypoint xsi:type="dc:Point" x="867.0" y="397.0"/>
+        <di:waypoint xsi:type="dc:Point" x="900.0" y="397.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_Task_3" targetElement="BPMNShape_EndEvent_2">
+        <di:waypoint xsi:type="dc:Point" x="1010.0" y="397.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1038.0" y="397.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1038.0" y="338.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_BoundaryEvent_1" targetElement="BPMNShape_Task_4">
+        <di:waypoint xsi:type="dc:Point" x="568.0" y="152.0"/>
+        <di:waypoint xsi:type="dc:Point" x="568.0" y="101.0"/>
+        <di:waypoint xsi:type="dc:Point" x="632.0" y="101.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_Task_4" targetElement="BPMNShape_EndEvent_4">
+        <di:waypoint xsi:type="dc:Point" x="759.0" y="101.0"/>
+        <di:waypoint xsi:type="dc:Point" x="788.0" y="101.0"/>
+        <di:waypoint xsi:type="dc:Point" x="788.0" y="101.0"/>
+        <di:waypoint xsi:type="dc:Point" x="824.0" y="101.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_SubProcess_1" targetElement="BPMNShape_SubProcess_2">
+        <di:waypoint xsi:type="dc:Point" x="810.0" y="470.0"/>
+        <di:waypoint xsi:type="dc:Point" x="810.0" y="520.0"/>
+        <di:waypoint xsi:type="dc:Point" x="811.0" y="520.0"/>
+        <di:waypoint xsi:type="dc:Point" x="811.0" y="540.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_StartEvent_3" targetElement="BPMNShape_Task_5">
+        <di:waypoint xsi:type="dc:Point" x="561.0" y="690.0"/>
+        <di:waypoint xsi:type="dc:Point" x="597.0" y="690.0"/>
+        <di:waypoint xsi:type="dc:Point" x="597.0" y="691.0"/>
+        <di:waypoint xsi:type="dc:Point" x="643.0" y="691.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_Task_5" targetElement="BPMNShape_IntermediateCatchEvent_2">
+        <di:waypoint xsi:type="dc:Point" x="761.0" y="691.0"/>
+        <di:waypoint xsi:type="dc:Point" x="791.0" y="691.0"/>
+        <di:waypoint xsi:type="dc:Point" x="791.0" y="691.0"/>
+        <di:waypoint xsi:type="dc:Point" x="829.0" y="691.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_IntermediateCatchEvent_2" targetElement="BPMNShape_Task_6">
+        <di:waypoint xsi:type="dc:Point" x="847.0" y="709.0"/>
+        <di:waypoint xsi:type="dc:Point" x="847.0" y="765.0"/>
+        <di:waypoint xsi:type="dc:Point" x="883.0" y="765.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_Task_6" targetElement="BPMNShape_EndEvent_5">
+        <di:waypoint xsi:type="dc:Point" x="993.0" y="765.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1023.0" y="765.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1023.0" y="708.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_BoundaryEvent_2" targetElement="BPMNShape_Task_7">
+        <di:waypoint xsi:type="dc:Point" x="554.0" y="858.0"/>
+        <di:waypoint xsi:type="dc:Point" x="554.0" y="918.0"/>
+        <di:waypoint xsi:type="dc:Point" x="635.0" y="918.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_17" bpmnElement="SequenceFlow_17" sourceElement="BPMNShape_Task_7" targetElement="BPMNShape_EndEvent_6">
+        <di:waypoint xsi:type="dc:Point" x="756.0" y="918.0"/>
+        <di:waypoint xsi:type="dc:Point" x="801.0" y="918.0"/>
+        <di:waypoint xsi:type="dc:Point" x="801.0" y="919.0"/>
+        <di:waypoint xsi:type="dc:Point" x="856.0" y="919.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_19" bpmnElement="SequenceFlow_19" sourceElement="BPMNShape_SubProcess_2" targetElement="BPMNShape_Task_9">
+        <di:waypoint xsi:type="dc:Point" x="1117.0" y="690.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1255.0" y="690.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1255.0" y="720.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_Task_8">
+        <di:waypoint xsi:type="dc:Point" x="186.0" y="322.0"/>
+        <di:waypoint xsi:type="dc:Point" x="228.0" y="322.0"/>
+        <di:waypoint xsi:type="dc:Point" x="228.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="280.0" y="321.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_Task_8" targetElement="BPMNShape_SubProcess_1">
+        <di:waypoint xsi:type="dc:Point" x="390.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="444.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="444.0" y="320.0"/>
+        <di:waypoint xsi:type="dc:Point" x="510.0" y="320.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_18" sourceElement="BPMNShape_Task_9" targetElement="BPMNShape_EndEvent_7">
+        <di:waypoint xsi:type="dc:Point" x="1310.0" y="745.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1332.0" y="745.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1332.0" y="745.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1360.0" y="745.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
